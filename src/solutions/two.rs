@@ -84,7 +84,7 @@ fn shape_to_score(shape: Shape) -> i32 {
 fn round_score(round: &str) -> i32 {
     let (opponent, you) = parse_round(round);
     let (opponent, you) = (to_shape(opponent), to_shape(you));
-    let shape_score = shape_to_score(you.clone());
+    let shape_score = shape_to_score(you);
     let outcome_score = round_outcome(opponent, you);
 
     shape_score + outcome_score
@@ -94,7 +94,7 @@ fn choose_shape(round: &str) -> i32 {
     let (opponent, outcome) = parse_round(round);
     let (opponent, outcome) = (to_shape(opponent), to_outcome(outcome));
     let you = outcome_to_shape(opponent, outcome);
-    let shape_score = shape_to_score(you.clone());
+    let shape_score = shape_to_score(you);
     let outcome_score = round_outcome(opponent, you);
 
     shape_score + outcome_score

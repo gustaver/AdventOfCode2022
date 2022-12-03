@@ -8,8 +8,8 @@ fn priority(c: char) -> u32 {
 
 fn rucksack_priority(rucksack: &str) -> u32 {
     let n = rucksack.len();
-    let c1 = &rucksack[0..n/2];
-    let c2 = &rucksack[n/2..n];
+    let c1 = &rucksack[..n/2];
+    let c2 = &rucksack[n/2..];
 
     let c1: HashSet<char> = HashSet::from_iter(c1.chars());
     let c2: HashSet<char> = HashSet::from_iter(c2.chars());
