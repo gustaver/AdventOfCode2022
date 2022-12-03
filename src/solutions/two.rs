@@ -1,10 +1,3 @@
-// P1:
-// X (Rock) -> 1, Y (Paper) -> 2, Z (Scissors) -> 3
-// A (Rock), B (Paper), C (Scissors)
-
-// P2:
-// X -> lose, Y -> draw, Z -> win
-
 #[derive(Copy, Clone)]
 enum Shape {
     Rock,
