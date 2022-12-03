@@ -107,19 +107,6 @@ fn choose_shape(round: &str) -> i32 {
     shape_score + outcome_score
 }
 
-// fn round_you(opponent: &str, outcome: &str) -> &str {
-//     match outcome {
-//         "X" => {
-//             "A" => 
-//         }
-//     }
-// }
-
-// fn shape_score(roud: &str) -> i32 {
-//     let (opponent, outcome) = parse_round(round);
-//     let you = 
-// }
-
 pub fn solve(input: &str) -> (i32, i32) {
     let rounds = input.lines().collect::<Vec<_>>();
     
