@@ -24,8 +24,8 @@ fn parse_instruction(line: &str) -> (usize, usize, usize) {
     )
 }
 
-pub fn solve(input: &str) -> (String, String) {
-    let stacks = [
+fn exec_instructions(instructions: &Vec<(usize, usize, usize)>, rev: bool) -> String {
+    let mut stacks = [
         String::from("FHBVRQDP"),
         String::from("LDZQWV"),
         String::from("HLZQGRPC"),
@@ -37,17 +37,22 @@ pub fn solve(input: &str) -> (String, String) {
         String::from("DCNWV")
     ];
 
-    let instructions = input.lines().skip(10).map(parse_instruction).collect::<Vec<_>>();
-
-    let mut p1_stacks = stacks.clone();
-    for (n, from, to) in instructions {
-        let stack_from = p1_stacks[from].clone();
-        let move_s = &stack_from[stack_from.len() - n..].chars().rev().collect::<String>();
-        p1_stacks[from] = String::from(&stack_from[..stack_from.len() - n]);
-        p1_stacks[to].push_str(move_s);
+    for &(n, from, to) in instructions {
+        let stack_from = &stacks[from];
+        let move_s = stack_from[stack_from.len() - n..].chars();
+        let move_s = if rev { move_s.rev().collect::<String>() } else { move_s.collect::<String>() };
+        stacks[from] = String::from(&stack_from[..stack_from.len() - n]);
+        stacks[to].push_str(&move_s);
     }
 
-    let p1: String = p1_stacks.iter().map(|s| s.chars().last().unwrap()).collect();
+    stacks.iter().map(|s| s.chars().last().unwrap()).collect()
+}
 
-    (p1, String::from(""))
+pub fn solve(input: &str) -> (String, String) {
+    let instructions = input.lines().skip(10).map(parse_instruction).collect::<Vec<_>>();
+
+    let p1 = exec_instructions(&instructions, true);
+    let p2 = exec_instructions(&instructions, false);
+
+    (p1, p2)
 }
