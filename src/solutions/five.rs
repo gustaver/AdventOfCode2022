@@ -1,13 +1,3 @@
-// [P]     [C]         [M]            
-// [D]     [P] [B]     [V] [S]        
-// [Q] [V] [R] [V]     [G] [B]        
-// [R] [W] [G] [J]     [T] [M]     [V]
-// [V] [Q] [Q] [F] [C] [N] [V]     [W]
-// [B] [Z] [Z] [H] [L] [P] [L] [J] [N]
-// [H] [D] [L] [D] [W] [R] [R] [P] [C]
-// [F] [L] [H] [R] [Z] [J] [J] [D] [D]
-//  1   2   3   4   5   6   7   8   9
-
 use regex::Regex;
 use lazy_static::lazy_static;
 
