@@ -1,27 +1,41 @@
 use itertools::Itertools;
+use std::collections::HashMap;
+use std::path::PathBuf;
 
-struct TreeNode {
-    name: String,
-    parent: Box<Option<TreeNode>>,
-    children: Vec<TreeNode>
+enum FSNode {
+    Directory((String, HashMap<String, FSNode>)),
+    File((String, usize))
 }
 
-struct FileNode {
-    name: String,
-    size: usize
-}
-
-enum FileSystem {
-    Directory(TreeNode),
-    File(FileNode)
-}
-
-fn build_filesystem(commands: &Vec<&str>) -> FileSystem {
-    let root = FileSystem::Directory(TreeNode{name: String::from("\\"), parent: Box::new(None), children: vec![]});
-    let current = &root;
+fn get_in_filesystem(fs: &HashMap<String, FSNode>) -> FSNode {
     
-    for command in commands {
-        match current {
+}
+
+fn build_filesystem(commands: &Vec<&str>) -> HashMap<String, FSNode> {
+    let root = HashMap::new();
+    let mut path = PathBuf::new();
+
+    for &command in commands {
+        println!("command: {}", command);
+        println!("path: {}", path.to_str().unwrap());
+        match &command[..2] {
+            "cd" => {
+                let (_, to) = command.trim().split_once(" ").unwrap();
+                println!("to: {}", to);
+                match to {
+                    "/" => {
+                        path.clear();
+                    },
+                    ".." => {
+                        path.pop();
+                    },
+                    _ => {
+                        path.push(to);
+                    }
+                }
+            },
+            "ls" => {},
+            _ => {}
         }
     }
 
@@ -30,7 +44,6 @@ fn build_filesystem(commands: &Vec<&str>) -> FileSystem {
 
 pub fn solve(input: &str) -> (usize, usize) {
     let commands = input.split("$ ").dropping(1).collect::<Vec<_>>();
-
-    println!("{:?}", commands);
+    let fs = build_filesystem(&commands);
     (0, 0)
 }
