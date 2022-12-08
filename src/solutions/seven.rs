@@ -3,28 +3,24 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 
 enum FSNode {
-    Directory((String, HashMap<String, FSNode>)),
-    File((String, usize))
-}
-
-fn get_in_filesystem(fs: &HashMap<String, FSNode>) -> FSNode {
-    
+    Directory(HashMap<String, FSNode>),
+    File(usize)
 }
 
 fn build_filesystem(commands: &Vec<&str>) -> HashMap<String, FSNode> {
-    let root = HashMap::new();
+    let mut root = HashMap::new();
+    root.insert(String::from("/"), FSNode::Directory(HashMap::new()));
+
     let mut path = PathBuf::new();
 
     for &command in commands {
-        println!("command: {}", command);
-        println!("path: {}", path.to_str().unwrap());
         match &command[..2] {
             "cd" => {
                 let (_, to) = command.trim().split_once(" ").unwrap();
-                println!("to: {}", to);
                 match to {
                     "/" => {
                         path.clear();
+                        path.push("/");
                     },
                     ".." => {
                         path.pop();
@@ -34,8 +30,19 @@ fn build_filesystem(commands: &Vec<&str>) -> HashMap<String, FSNode> {
                     }
                 }
             },
-            "ls" => {},
-            _ => {}
+            "ls" => {
+                let output = command.lines().dropping(1).collect::<Vec<_>>();
+                let current = &root;
+                println!("path: {:?}", path.to_str().unwrap());
+                for dir in path.iter() {
+                    println!("{:?}", dir);
+                    let current = match current.get(dir.to_str().unwrap()).unwrap() {
+                        FSNode::Directory(map) => map,
+                        _ => unreachable!()
+                    };
+                }
+            },
+            _ => unreachable!()
         }
     }
 
