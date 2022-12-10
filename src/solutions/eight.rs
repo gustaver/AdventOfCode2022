@@ -1,20 +1,19 @@
 use itertools::{Itertools, iproduct};
+use std::cmp::max;
 
 fn visible_along(grid: &Vec<&[u8]>, transpose: bool, cols_backwards: bool, rows_backwards: bool) -> Vec<Vec<bool>> {
     let (rows, cols) = (grid.len(), grid[0].len());
     let mut visibility = vec![vec![false; cols]; rows];
 
     for i in 0..rows {
-        let mut max = 0;
+        let mut tallest = 0;
         for j in 0..cols {
             let (i, j) = if transpose { (j, i) } else { (i, j) };
             let j = if cols_backwards { cols - j - 1 } else { j };
             let i = if rows_backwards { rows - i - 1 } else { i };
             let tree = grid[i][j];
-            visibility[i][j] = tree > max;
-            if tree > max {
-                max = tree;
-            }
+            visibility[i][j] = tree > tallest;
+            tallest = max(tallest, tree);
         }
     }
 
