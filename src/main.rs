@@ -3,12 +3,12 @@ use std::fs;
 mod solutions;
 
 fn main() {
-    let path = "../inputs/09.in";
+    let path = "../inputs/10.in";
     let input = fs::read_to_string(path)
         .expect("Error reading input");
 
-    let (p1, p2) = solutions::nine::solve(&input);
+    let (p1, p2) = solutions::ten::solve(&input);
 
-    println!("p1: {:?}", p1);
-    println!("p2: {:?}", p2);
+    println!("p1: {}", p1);
+    println!("p2: {}", p2);
 }
