@@ -57,8 +57,18 @@ pub fn solve(input: &str) -> (usize, usize) {
     let reduced = not_jammed.map(|(valve, _)| (*valve, reduced_neighbors(&flow, &tunnels, valve))).collect::<HashMap<_,_>>();
 
     let open = flow.iter().filter_map(|(v, f)| (*f == 0).then_some(*v)).collect::<HashSet<_>>();
-    let p1 = max_pressure(&flow, &reduced, open, "AA", 30, 0);
-    
-    let p2 = 0;
+    let p1 = max_pressure(&flow, &reduced, open.clone(), "AA", 30, 0);
+
+    let to_open = flow.iter().filter_map(|(v, f)| (*f != 0).then_some(*v)).collect::<HashSet<_>>();
+    let p2 = to_open.iter().combinations(to_open.len() / 2 as usize).map(|half_open| {
+        let half_open = half_open.iter().map(|v| **v).collect::<HashSet<_>>();
+        let other_half = to_open.difference(&half_open).map(|&s| s).collect::<HashSet<_>>();
+
+        let you_open = open.union(&half_open).map(|&s| s).collect::<HashSet<_>>();
+        let elephant_open = open.union(&other_half).map(|&s| s).collect::<HashSet<_>>();
+        max_pressure(&flow, &reduced, you_open, "AA", 26, 0) + max_pressure(&flow, &reduced, elephant_open, "AA", 26, 0)
+
+    }).max().unwrap();
+
     (p1, p2)
 }
