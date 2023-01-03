@@ -61,7 +61,7 @@ pub fn solve(input: &str) -> (usize, usize) {
 
     let to_open = flow.iter().filter_map(|(v, f)| (*f != 0).then_some(*v)).collect::<HashSet<_>>();
     let p2 = to_open.iter().combinations(to_open.len() / 2 as usize).map(|half_open| {
-        let half_open = half_open.iter().map(|v| **v).collect::<HashSet<_>>();
+        let half_open = half_open.iter().map(|&&v| v).collect::<HashSet<_>>();
         let other_half = to_open.difference(&half_open).map(|&s| s).collect::<HashSet<_>>();
 
         let you_open = open.union(&half_open).map(|&s| s).collect::<HashSet<_>>();
