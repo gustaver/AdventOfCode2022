@@ -83,14 +83,13 @@ fn wrap_cube(state: State) -> State {
 
 fn next_pos(board: &Vec<Vec<u8>>, state: State, cube: bool) -> State {
     let (heading, pos) = state;
-    let mut next_state = state;
     let (dr, dc) = HEADINGS[heading];
     let next_pos = (pos.0 as isize + dr, pos.1 as isize + dc);
-    if !on_board(board, next_pos) {
-        next_state = if cube { wrap_cube(state) } else { wrap_board(board, state) };
+    let next_state = if !on_board(board, next_pos) {
+        if cube { wrap_cube(state) } else { wrap_board(board, state) }
     } else {
-        next_state = (heading, (next_pos.0 as usize, next_pos.1 as usize));
-    }
+        (heading, (next_pos.0 as usize, next_pos.1 as usize))
+    };
     let (_, (r, c)) = next_state;
     if board[r][c] == b'#' { state } else { next_state }
 }
