@@ -1,14 +1,14 @@
 type Range = (usize, usize);
 
 fn parse_range(assignmnet: &str) -> Range {
-    if let [start, end] = assignmnet.split("-").collect::<Vec<_>>()[..] {
+    if let [start, end] = assignmnet.split('-').collect::<Vec<_>>()[..] {
         return (start.parse::<usize>().unwrap(), end.parse::<usize>().unwrap());
     }
     unreachable!();
 }
 
 fn parse_assigment(line: &str) -> (Range, Range) {
-    if let [a1, a2] = line.split(",").collect::<Vec<_>>()[..] {
+    if let [a1, a2] = line.split(',').collect::<Vec<_>>()[..] {
         return (parse_range(a1), parse_range(a2));
     }
     unreachable!();

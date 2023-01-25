@@ -14,7 +14,7 @@ fn time_to_robot(robots: [usize; 4], resources: [usize; 4], cost: [usize; 4], ti
         }
         for i in 0..res.len() { res[i] += robots[i] }
     }
-    return (0, res, rob)
+    (0, res, rob)
 }
 
 fn max_geodes(blueprint: [[usize; 4]; 4], max_robots: [usize; 4], robots: [usize; 4], resources: [usize; 4], time: usize) -> usize {
@@ -46,8 +46,8 @@ pub fn solve(input: &str) -> (usize, usize) {
 
     let p1 = blueprints.iter().enumerate().map(|(i, &bp)| {
         let mut max_robots = [0, 0, 0, 0];
-        for rob in 0..bp.len() {
-            for (r, &c) in bp[rob].iter().enumerate() {
+        for rob in bp {
+            for (r, &c) in rob.iter().enumerate() {
                 max_robots[r] = c.max(max_robots[r]);
             } 
         }
@@ -55,8 +55,8 @@ pub fn solve(input: &str) -> (usize, usize) {
     }).sum();
     let p2 = blueprints.iter().take(3).map(|&bp| {
         let mut max_robots = [0, 0, 0, 0];
-        for rob in 0..bp.len() {
-            for (r, &c) in bp[rob].iter().enumerate() {
+        for rob in bp {
+            for (r, &c) in rob.iter().enumerate() {
                 max_robots[r] = c.max(max_robots[r]);
             } 
         }

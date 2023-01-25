@@ -75,8 +75,8 @@ fn simulate(jets: &Vec<isize>, n: usize) -> HeightOrCycle {
         let maybe_cycle = states.iter().enumerate().filter(|&(_, &(r, j, _))| (r, j) == (ri, ji)).tuple_windows().find(|(a, b, c)| {
             b.1.1 - a.1.1 == c.1.1 - b.1.1
         });
-        if maybe_cycle.is_some() {
-            let (_, (start, _), (end, _)) = maybe_cycle.unwrap();
+        if let Some(cycle) = maybe_cycle {
+            let (_, (start, _), (end, _)) = cycle;
             let cycle = states[start..=end].iter().tuple_windows().map(|(a, b)| b.2 - a.2).collect_vec();
             return HeightOrCycle::Cycle((h, i - 1, cycle))
         }

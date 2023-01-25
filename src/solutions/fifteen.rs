@@ -37,13 +37,13 @@ fn perimeter(sensor: (isize, isize), nearest_beacon: (isize, isize)) -> Vec<(isi
 }
 
 pub fn solve(input: &str) -> (usize, usize) {
-    let sensor_beacons = input.lines().map(|l| parse_line(l)).collect_vec();
+    let sensor_beacons = input.lines().map(parse_line).collect_vec();
     let beacons = sensor_beacons.iter().map(|&(_, b)| b).collect::<HashSet<_>>();
     let sensors = sensor_beacons.iter().map(|&(s, _)| s).collect::<HashSet<_>>();
 
     let p1 = sensor_beacons.iter().fold(HashSet::new(), |mut cover, &(s, b)| {
         let d = manhattan(s, b) as isize;
-        cover.extend((s.0 - d..=s.0 + d).map(|x| (x, 2000000 as isize)).filter(|p| {
+        cover.extend((s.0 - d..=s.0 + d).map(|x| (x, 2000000isize)).filter(|p| {
             !sensors.contains(p) && !beacons.contains(p) && manhattan(s, *p) <= d as usize
         }));
         cover

@@ -50,7 +50,7 @@ fn reduced_neighbors<'a>(flow: &'a HashMap<&str, usize>, tunnels: &'a HashMap<&s
 }
 
 pub fn solve(input: &str) -> (usize, usize) {
-    let parsed = input.lines().map(|l| parse_line(l));
+    let parsed = input.lines().map(parse_line);
     let flow = parsed.clone().map(|p| (p.0, p.1)).collect::<HashMap<_, _>>();
     let tunnels = parsed.map(|p| (p.0, p.2)).collect::<HashMap<_, _>>();
     let not_jammed = flow.iter().filter(|&(v, f)| *f > 0 || *v == "AA");
@@ -60,12 +60,12 @@ pub fn solve(input: &str) -> (usize, usize) {
     let p1 = max_pressure(&flow, &reduced, open.clone(), "AA", 30, 0);
 
     let to_open = flow.iter().filter_map(|(v, f)| (*f != 0).then_some(*v)).collect::<HashSet<_>>();
-    let p2 = to_open.iter().combinations(to_open.len() / 2 as usize).map(|half_open| {
+    let p2 = to_open.iter().combinations(to_open.len() / 2usize).map(|half_open| {
         let half_open = half_open.iter().map(|&&v| v).collect::<HashSet<_>>();
-        let other_half = to_open.difference(&half_open).map(|&s| s).collect::<HashSet<_>>();
+        let other_half = to_open.difference(&half_open).copied().collect::<HashSet<_>>();
 
-        let you_open = open.union(&half_open).map(|&s| s).collect::<HashSet<_>>();
-        let elephant_open = open.union(&other_half).map(|&s| s).collect::<HashSet<_>>();
+        let you_open = open.union(&half_open).copied().collect::<HashSet<_>>();
+        let elephant_open = open.union(&other_half).copied().collect::<HashSet<_>>();
         max_pressure(&flow, &reduced, you_open, "AA", 26, 0) + max_pressure(&flow, &reduced, elephant_open, "AA", 26, 0)
 
     }).max().unwrap();

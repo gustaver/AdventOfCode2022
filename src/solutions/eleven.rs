@@ -17,7 +17,7 @@ struct Monkey {
 }
 
 fn parse_operation(operation: &str) -> Operation {
-    let (op, y) = operation.split_once(" ").unwrap();
+    let (op, y) = operation.split_once(' ').unwrap();
     match op {
         "+" => Operation::Add(y.parse().unwrap()),
         "*" if y == "old" => Operation::Square,
@@ -64,7 +64,7 @@ fn monkey_business(monkeys: &Vec<Monkey>, rounds: usize, op: impl Fn(usize) -> u
 }
 
 pub fn solve(input: &str) -> (usize, usize) {
-    let monkeys = input.split("\n\n").map(|m| parse_monkey(m)).collect_vec();
+    let monkeys = input.split("\n\n").map(parse_monkey).collect_vec();
 
     let modulus: usize = monkeys.iter().map(|m| m.test).product();
 

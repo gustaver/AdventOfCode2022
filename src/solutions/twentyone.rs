@@ -53,7 +53,7 @@ fn calculate(monkeys: &HashMap<&str, &str>, monkey: &str) -> f64 {
         Ok(x) => x,
         Err(_) => {
             let (lhs, op, rhs) = parse_op(yell);
-            exec_op(op, calculate(&monkeys, lhs), calculate(&monkeys, rhs))
+            exec_op(op, calculate(monkeys, lhs), calculate(monkeys, rhs))
         }
     }
 }
@@ -65,7 +65,7 @@ fn maybe_calculate(monkeys: &HashMap<&str, &str>, monkey: &str) -> Option<f64> {
         Ok(x) => Some(x),
         Err(_) => {
             let (lhs, op, rhs) = parse_op(yell);
-            match (maybe_calculate(&monkeys, lhs), maybe_calculate(&monkeys, rhs)) {
+            match (maybe_calculate(monkeys, lhs), maybe_calculate(monkeys, rhs)) {
                 (None, Some(_)) => None,
                 (Some(_), None) => None,
                 (Some(x), Some(y)) => Some(exec_op(op, x, y)),
@@ -82,9 +82,9 @@ fn humn_equals(monkeys: &HashMap<&str, &str>, monkey: &str, result: f64) -> f64 
         Ok(x) => x,
         Err(_) => {
             let (lhs, op, rhs) = parse_op(yell);
-            match (maybe_calculate(&monkeys, lhs), maybe_calculate(&monkeys, rhs)) {
-                (Some(x), None) => humn_equals(&monkeys, rhs, solve_op(op, Some(x), None, result)),
-                (None, Some(x)) => humn_equals(&monkeys, lhs, solve_op(op, None, Some(x), result)),
+            match (maybe_calculate(monkeys, lhs), maybe_calculate(monkeys, rhs)) {
+                (Some(x), None) => humn_equals(monkeys, rhs, solve_op(op, Some(x), None, result)),
+                (None, Some(x)) => humn_equals(monkeys, lhs, solve_op(op, None, Some(x), result)),
                 _ => unreachable!()    
             }
         }

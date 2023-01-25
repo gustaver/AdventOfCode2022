@@ -28,7 +28,7 @@ fn bfs_shortest_path(board: &Vec<Vec<u8>>, start: (usize, usize), goal: (usize, 
             return Some(distance);
         }
 
-        let neighbors = neighbors(&board, next, &visited);
+        let neighbors = neighbors(board, next, &visited);
         for n in neighbors {
             to_visit.push_back((n, distance + 1));
             visited.insert(n);

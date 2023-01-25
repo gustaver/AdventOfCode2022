@@ -38,11 +38,11 @@ fn flood(cubes: &HashSet<Point>, bounds: (isize, isize)) -> usize {
 }
 
 pub fn solve(input: &str) -> (usize, usize) {
-    let cubes: HashSet<Point> = input.lines().map(|l| l.split( ",").map(|s| s.parse::<isize>().unwrap()).collect_tuple().unwrap()).collect();
+    let cubes: HashSet<Point> = input.lines().map(|l| l.split( ',').map(|s| s.parse::<isize>().unwrap()).collect_tuple().unwrap()).collect();
 
     let p1: usize = cubes.iter().map(|&p| exposed(p, &cubes).len()).sum();
 
-    let (sq_min, sq_max) = match cubes.iter().map(|c| [c.0, c.1, c.2]).flatten().minmax() {
+    let (sq_min, sq_max) = match cubes.iter().flat_map(|c| [c.0, c.1, c.2]).minmax() {
         MinMaxResult::MinMax(min, max) => (min, max),
         _ => unreachable!()
     };

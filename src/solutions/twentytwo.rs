@@ -111,7 +111,7 @@ pub fn solve(input: &str) -> (usize, usize) {
     let (board, path) = input.split_once("\n\n").unwrap();
     let path = format!("R{path}");
     let path = zip(
-        Regex::new(r"\d+").unwrap().split(&path).filter_map(|d| (d.len() > 0).then_some(d)),
+        Regex::new(r"\d+").unwrap().split(&path).filter_map(|d| d.is_empty().then_some(d)),
         Regex::new(r"R|L").unwrap().split(&path).filter_map(|m| m.parse::<usize>().ok())
     ).collect_vec();
     let board = board.lines().map(|l| l.as_bytes().to_vec()).collect_vec();

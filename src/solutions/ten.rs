@@ -9,7 +9,7 @@ pub fn solve(input: &str) -> (isize, String) {
         hist.push(x);
         match inst {
             addx if inst.starts_with("addx") => {
-                let (_, y) = addx.split_once(" ").unwrap();
+                let (_, y) = addx.split_once(' ').unwrap();
                 let y = y.parse::<isize>().unwrap();
                 hist.push(x + y);
             },

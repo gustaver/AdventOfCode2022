@@ -27,7 +27,7 @@ fn group_priority(r1: &str, r2: &str, r3: &str) -> u32 {
     let overlap = [r2, r3].iter().fold(r1, |acc, r| acc.intersection(r).cloned().collect());
     let &badge = overlap.iter().collect::<Vec<&char>>()[0];
 
-    return priority(badge);
+    priority(badge)
 }
 
 pub fn solve(input: &str) -> (u32, u32) {

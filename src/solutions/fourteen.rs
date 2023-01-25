@@ -30,17 +30,15 @@ fn draw_path(cave: &mut Vec<Vec<u8>>, path: &Vec<(usize, usize)>) {
     for (&(x1, y1), &(x2, y2)) in path.iter().tuple_windows() {
         let (x1, x2) = (min(x1, x2), max(x1, x2));
         let (y1, y2) = (min(y1, y2), max(y1, y2));
-        for x in x1..=x2 {
-            for y in y1..=y2 {
-                cave[y][x] = b'#';
-            }
+        for (x, y) in (x1..=x2).cartesian_product(y1..=y2) {
+            cave[y][x] = b'#';
         }
     }
 }
 
 pub fn solve(input: &str) -> (usize, usize) {
     let paths = input.lines().map(|l| l.split(" -> ").map(|p| {
-        let(x, y) = p.split_once(",").unwrap();
+        let(x, y) = p.split_once(',').unwrap();
         (x.parse::<usize>().unwrap(), y.parse::<usize>().unwrap())
     }).collect_vec()).collect_vec();
     let x_max = paths.iter().flatten().max_by_key(|(x, _)| x).unwrap().0;

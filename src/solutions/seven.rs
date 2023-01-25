@@ -12,7 +12,7 @@ fn build_filesystem(commands: &Vec<&str>) -> HashMap<PathBuf, usize> {
     for &command in commands {
         match &command[..2] {
             "cd" => {
-                let (_, to) = command.trim().split_once(" ").unwrap();
+                let (_, to) = command.trim().split_once(' ').unwrap();
                 match to {
                     "/" => {
                         path.clear();
@@ -29,7 +29,7 @@ fn build_filesystem(commands: &Vec<&str>) -> HashMap<PathBuf, usize> {
             "ls" => {
                 let output = command.lines().dropping(1).collect::<Vec<_>>();
                 let size: usize = output.iter().filter_map(|&l| {
-                    let (size, _) = l.split_once(" ").unwrap();
+                    let (size, _) = l.split_once(' ').unwrap();
                     size.parse::<usize>().ok()
                 }).sum();
                 root.insert(path.clone(), size);

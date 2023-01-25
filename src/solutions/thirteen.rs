@@ -5,7 +5,7 @@ use regex::Regex;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 enum Packet {
-    List(Box<Vec<Packet>>),
+    List(Vec<Packet>),
     Int(usize)
 }
 
@@ -20,7 +20,7 @@ fn parse_list(tokens: &mut VecDeque<&str>) -> Packet {
         packets.push(packet);
     }
     assert_eq!(tokens.pop_front().unwrap(), "]");
-    Packet::List(Box::new(packets))
+    Packet::List(packets)
 }
 
 fn parse_list_item(tokens: &mut VecDeque<&str>) -> Option<Packet> {
@@ -49,7 +49,7 @@ fn compare(left: &Packet, right: &Packet) -> Ordering {
                 match (v_left.get(i), v_right.get(i)) {
                     (Some(_), None) => return Ordering::Greater,
                     (None, Some(_)) => return Ordering::Less,
-                    (Some(ref l), Some(ref r)) => {
+                    (Some(l), Some(r)) => {
                         match compare( l,  r) {
                             Ordering::Equal => {},
                             order => return order 
@@ -60,15 +60,15 @@ fn compare(left: &Packet, right: &Packet) -> Ordering {
             }
             Ordering::Equal
         },
-        (Packet::List(_), Packet::Int(r)) => compare(left, &Packet::List(Box::new(vec![Packet::Int(*r)]))),
-        (Packet::Int(l), Packet::List(_)) => compare(&Packet::List(Box::new(vec![Packet::Int(*l)])), right),
+        (Packet::List(_), Packet::Int(r)) => compare(left, &Packet::List(vec![Packet::Int(*r)])),
+        (Packet::Int(l), Packet::List(_)) => compare(&Packet::List(vec![Packet::Int(*l)]), right),
         (Packet::Int(l), Packet::Int(r)) => l.cmp(r)
     }
 }
 
 pub fn solve(input: &str) -> (usize, usize) {
     let packets = input.split("\n\n")
-        .map(|packets_str| packets_str.split_once("\n").unwrap())
+        .map(|packets_str| packets_str.split_once('\n').unwrap())
         .map(|(l1, l2)| (parse_packet(l1), parse_packet(l2)))
         .collect_vec();
 
@@ -78,12 +78,12 @@ pub fn solve(input: &str) -> (usize, usize) {
 
     let mut packets = packets.iter().flat_map(|(l, r)| [l.clone(), r.clone()]).collect::<Vec<_>>();
     let dividers = [
-        Packet::List(Box::new(vec![Packet::List(Box::new(vec![Packet::Int(2)]))])),
-        Packet::List(Box::new(vec![Packet::List(Box::new(vec![Packet::Int(6)]))]))
+        Packet::List(vec![Packet::List(vec![Packet::Int(2)])]),
+        Packet::List(vec![Packet::List(vec![Packet::Int(6)])])
     ];
     packets.extend(dividers.clone());
 
-    packets.sort_by(|a, b| compare(a, b));
+    packets.sort_by(compare);
 
     let p2: usize = packets.iter().positions(|p| dividers.contains(p)).map(|i| i + 1).product();
 

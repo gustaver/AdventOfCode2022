@@ -35,7 +35,7 @@ fn execute_moves(moves: &Vec<(&str, isize)>, rope_len: usize) -> usize {
 
 pub fn solve(input: &str) -> (usize, usize) {
     let moves = input.lines().map(|l| {
-        let (dir, len) = l.split_once(" ").unwrap();
+        let (dir, len) = l.split_once(' ').unwrap();
         (dir, len.parse::<isize>().unwrap())
     }).collect::<Vec<_>>();
 
