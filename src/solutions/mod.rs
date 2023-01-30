@@ -22,3 +22,4 @@ pub mod twentyone;
 pub mod twentytwo;
 pub mod twentythree;
 pub mod twentyfour;
+pub mod twentyfive;
